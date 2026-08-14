@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Install Fortinet Certificate</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #0f172a;
+            --subtext: #475569;
+            --border: #e2e8f0;
+            --accent-bg: #eff6ff;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            margin: 0;
+            padding: 24px 16px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 550px;
+            width: 100%;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            margin: 0 0 8px 0;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
+
+        .os-badge {
+            display: inline-block;
+            background: var(--accent-bg);
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.85rem;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            margin-bottom: 12px;
+        }
+
+        .download-btn {
+            display: block;
+            width: 100%;
+            background-color: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 14px 0;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.05rem;
+            box-sizing: border-box;
+            transition: background-color 0.2s;
+        }
+
+        .download-btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .os-guide {
+            display: none;
+        }
+
+        .os-guide.active {
+            display: block;
+        }
+
+        ol {
+            padding-left: 20px;
+            margin: 12px 0 0 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+            color: var(--text);
+        }
+
+        .alert-box {
+            background-color: #fef2f2;
+            border-left: 4px solid #ef4444;
+            color: #991b1b;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            margin-top: 14px;
+        }
+
+        code {
+            background-color: #f1f5f9;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>School Web Filter Setup</h1>
+        <p style="color: var(--subtext); margin: 0;">Install the Fortinet SSL Certificate to secure your internet connection.</p>
+    </div>
+
+    <div class="card" style="text-align: center;">
+        <span class="os-badge" id="detected-os-badge">Detecting Device...</span>
+        <a href="Fortinet_CA_SSL.cer" id="download-link" class="download-btn" download="Fortinet_CA_SSL.cer">1. Download Fortinet Certificate</a>
+    </div>
+
+    <div class="card">
+        <h2 style="font-size: 1.15rem; margin-top: 0;">2. Complete Installation</h2>
+
+        <!-- iOS Instructions -->
+        <div id="guide-ios" class="os-guide">
+            <ol>
+                <li>Tap <strong>Download Fortinet Certificate</strong> above and press <strong>Allow</strong>.</li>
+                <li>Open your device <strong>Settings</strong> app.</li>
+                <li>Tap <strong>Profile Downloaded</strong> (near the top).</li>
+                <li>Tap <strong>Install</strong> in the top-right corner and enter your passcode.</li>
+            </ol>
+            <div class="alert-box">
+                <strong>Crucial Final Step for iOS:</strong><br>
+                Go to <code>Settings > General > About > Certificate Trust Settings</code>.<br>
+                Under "Enable full trust for root certificates", toggle <strong>ON</strong> trust for <strong>Fortinet_CA_SSL</strong>.
+            </div>
+        </div>
+
+        <!-- Android Instructions -->
+        <div id="guide-android" class="os-guide">
+            <ol>
+                <li>Tap <strong>Download Fortinet Certificate</strong> above.</li>
+                <li>Open device <strong>Settings</strong>.</li>
+                <li>Search for <strong>CA Certificate</strong> (or go to <em>Security > Encryption & Credentials</em>).</li>
+                <li>Select <strong>Install a certificate</strong> &rarr; <strong>CA Certificate</strong>.</li>
+                <li>Tap <strong>Install Anyway</strong> if prompted.</li>
+                <li>Select <code>Fortinet_CA_SSL.cer</code> from your Downloads folder.</li>
+                <li>If asked for a certificate name, enter <code>Fortinet SSL</code>.</li>
+            </ol>
+        </div>
+
+        <!-- Windows Instructions -->
+        <div id="guide-windows" class="os-guide">
+            <ol>
+                <li>Click <strong>Download Fortinet Certificate</strong> above and open the file.</li>
+                <li>Click <strong>Install Certificate...</strong></li>
+                <li>Select <strong>Current User</strong> (or Local Machine) and click Next.</li>
+                <li>Choose <strong>Place all certificates in the following store</strong>.</li>
+                <li>Click <strong>Browse</strong> and select <strong>Trusted Root Certification Authorities</strong>.</li>
+                <li>Click Next, then Finish, and select <strong>Yes</strong> on the security prompt.</li>
+            </ol>
+        </div>
+
+        <!-- macOS Instructions -->
+        <div id="guide-mac" class="os-guide">
+            <ol>
+                <li>Click <strong>Download Fortinet Certificate</strong> above and double-click to open.</li>
+                <li>In <strong>Keychain Access</strong>, find <code>Fortinet_CA_SSL</code> under <em>login</em> or <em>System</em>.</li>
+                <li>Double-click the certificate and expand the <strong>Trust</strong> section.</li>
+                <li>Set <em>When using this certificate</em> to <strong>Always Trust</strong>.</li>
+                <li>Close the window and enter your Mac password to confirm.</li>
+            </ol>
+        </div>
+
+        <!-- Fallback Instructions -->
+        <div id="guide-fallback" class="os-guide">
+            <p>Download the file above, open your device's security settings, and install <code>Fortinet_CA_SSL.cer</code> into your Trusted Root Certification Authorities store.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    function detectOS() {
+        const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+        const platform = navigator.platform || '';
+
+        // iOS & iPadOS detection
+        if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) return 'ios';
+        if (platform === 'MacIntel' && navigator.maxTouchPoints > 1) return 'ios';
+
+        // Android
+        if (/android/i.test(userAgent)) return 'android';
+
+        // macOS
+        if (/Mac/i.test(platform) || /Macintosh/i.test(userAgent)) return 'mac';
+
+        // Windows
+        if (/Win/i.test(platform) || /Windows/i.test(userAgent)) return 'windows';
+
+        return 'unknown';
+    }
+
+    const detected = detectOS();
+    const osLabels = {
+        'ios': 'Apple iOS / iPadOS Detected',
+        'android': 'Android Device Detected',
+        'windows': 'Windows PC Detected',
+        'mac': 'macOS Device Detected',
+        'unknown': 'Device Detected'
+    };
+
+    // Update UI badge
+    document.getElementById('detected-os-badge').innerText = osLabels[detected];
+
+    // Show matching instructions
+    const activeGuide = document.getElementById('guide-' + (detected !== 'unknown' ? detected : 'fallback'));
+    if (activeGuide) activeGuide.classList.add('active');
+
+    // Auto-trigger download for mobile devices after layout renders
+    window.addEventListener('DOMContentLoaded', () => {
+        if (detected === 'ios' || detected === 'android') {
+            setTimeout(() => {
+                document.getElementById('download-link').click();
+            }, 800);
+        }
+    });
+</script>
+
+</body>
+</html>

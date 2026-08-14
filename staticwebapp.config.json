@@ -1,0 +1,12 @@
+{
+  "mimeTypes": {
+    ".crt": "application/x-x509-ca-cert",
+    ".cer": "application/x-x509-ca-cert",
+    ".mobileconfig": "application/x-apple-aspen-config"
+  },
+  "responseOverrides": {
+    "404": {
+      "rewrite": "/index.html"
+    }
+  }
+}
