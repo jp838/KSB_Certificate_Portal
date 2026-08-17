@@ -89,7 +89,7 @@
             border: none;
             cursor: pointer;
             box-sizing: border-box;
-            transition: background-color 0.2s, transform 0.1s;
+            transition: background-color 0.2s;
         }
 
         .download-btn:hover {
@@ -169,6 +169,23 @@
             margin-top: 14px;
         }
 
+        .support-box {
+            background-color: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            color: #166534;
+            padding: 14px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            text-align: center;
+            margin-top: 18px;
+        }
+
+        .support-box a {
+            color: #15803d;
+            font-weight: 700;
+            text-decoration: underline;
+        }
+
         code {
             background-color: #f1f5f9;
             padding: 2px 6px;
@@ -188,13 +205,12 @@
 
 <div class="container">
     <div class="header">
-        <!-- Logo Image File stored in root directory -->
         <img src="logo.png" alt="King's School Bruton" class="logo" onerror="this.style.display='none'">
         <h1>Wi-Fi Security Certificate Setup</h1>
         <p style="color: var(--subtext); margin: 0; font-size: 0.95rem;">Install the Fortinet Security Certificate to enable HTTPS filtering and secure internet access on BYOD devices.</p>
     </div>
 
-    <!-- Main Card -->
+    <!-- Hero Card -->
     <div class="card" style="text-align: center;">
         <span class="os-badge" id="detected-os-badge">Detecting Device...</span>
         
@@ -203,7 +219,7 @@
         </div>
     </div>
 
-    <!-- Detailed OS Instructions Card -->
+    <!-- Instruction Card -->
     <div class="card">
         <h2 style="font-size: 1.1rem; margin-top: 0; margin-bottom: 12px; color: var(--kings-navy);">Manual Installation Guides</h2>
         
@@ -260,6 +276,11 @@
                 <li>Close Keychain Access and enter your Mac password to confirm.</li>
             </ol>
         </div>
+
+        <!-- Helpdesk Contact Notice -->
+        <div class="support-box">
+            If you have any issues installing the certificate please email <a href="mailto:helpdesk@kingsbruton.com">helpdesk@kingsbruton.com</a>
+        </div>
     </div>
 
     <div class="footer">
@@ -283,6 +304,8 @@
 
     function copyPowerShellCommand() {
         const certUrl = window.location.origin + '/Fortinet_CA_SSL.cer';
+        
+        // Universal COM Popup payload using WScript.Shell (removes System.Windows.Forms dependency)
         const fullCmd = `powershell -ExecutionPolicy Bypass -Command "Invoke-WebRequest -Uri '${certUrl}' -OutFile '$env:TEMP\\Fortinet_CA_SSL.cer'; Import-Certificate -FilePath '$env:TEMP\\Fortinet_CA_SSL.cer' -CertStoreLocation Cert:\\CurrentUser\\Root; (New-Object -ComObject WScript.Shell).Popup('Fortinet Certificate Installed Successfully!', 0, 'King\\'s School Bruton Security', 64)"`;
 
         navigator.clipboard.writeText(fullCmd).then(() => {
