@@ -159,6 +159,12 @@
             color: var(--text);
         }
 
+        .manual-section {
+            margin-top: 16px;
+            padding-top: 14px;
+            border-top: 1px dashed var(--border);
+        }
+
         .alert-box {
             background-color: #fef2f2;
             border-left: 4px solid #ef4444;
@@ -221,7 +227,7 @@
 
     <!-- Instruction Card -->
     <div class="card">
-        <h2 style="font-size: 1.1rem; margin-top: 0; margin-bottom: 12px; color: var(--kings-navy);">Manual Installation Guides</h2>
+        <h2 style="font-size: 1.1rem; margin-top: 0; margin-bottom: 12px; color: var(--kings-navy);">Installation Guides</h2>
         
         <div class="tab-group">
             <button class="tab-btn" id="tab-windows" onclick="switchOS('windows')">Windows</button>
@@ -232,14 +238,26 @@
 
         <!-- Windows Guide -->
         <div id="guide-windows" class="os-guide">
+            <p style="margin: 0 0 8px 0; font-weight: 600; color: var(--kings-navy);">Option A: Automated Install (Recommended)</p>
             <ol>
                 <li>Click <strong>Copy Auto-Install Command</strong> above.</li>
                 <li>Press <code>Win + R</code>, type <code>powershell</code>, and press <strong>Enter</strong>.</li>
-                <li>Right-click in the window to paste, then press <strong>Enter</strong>.</li>
+                <li>Right-click inside the PowerShell window to paste, then press <strong>Enter</strong>.</li>
+                <li>Click <strong>Yes</strong> on the Windows prompt (UAC) to grant permission.</li>
             </ol>
-            <p style="font-size: 0.85rem; color: var(--subtext); margin-top: 10px;">
-                <em>Alternatively, <a href="Fortinet_CA_SSL.cer" download="Fortinet_CA_SSL.cer">download Fortinet_CA_SSL.cer directly</a> to install via the Windows Wizard.</em>
-            </p>
+
+            <div class="manual-section">
+                <p style="margin: 0 0 8px 0; font-weight: 600; color: var(--kings-navy);">Option B: Manual Installation Instructions</p>
+                <ol>
+                    <li><a href="Fortinet_CA_SSL.cer" download="Fortinet_CA_SSL.cer" style="color: var(--kings-navy); font-weight: 700;">Click here to download Fortinet_CA_SSL.cer</a> to your computer.</li>
+                    <li>Double-click the downloaded file and click <strong>Open</strong>.</li>
+                    <li>Click <strong>Install Certificate...</strong> at the bottom of the window.</li>
+                    <li>Select <strong>Local Machine</strong> and click <strong>Next</strong> (click <em>Yes</em> if prompted by Windows).</li>
+                    <li>Select <strong>Place all certificates in the following store</strong> and click <strong>Browse...</strong></li>
+                    <li>Choose <strong>Trusted Root Certification Authorities</strong> and click <strong>OK</strong>.</li>
+                    <li>Click <strong>Next</strong>, then click <strong>Finish</strong> to complete the setup.</li>
+                </ol>
+            </div>
         </div>
 
         <!-- iOS / iPadOS Guide -->
@@ -305,8 +323,8 @@
     function copyPowerShellCommand() {
         const certUrl = window.location.origin + '/Fortinet_CA_SSL.cer';
         
-        // Universal COM Popup payload using WScript.Shell with corrected '' quote escaping for PowerShell
-        const fullCmd = `powershell -ExecutionPolicy Bypass -Command "Invoke-WebRequest -Uri '${certUrl}' -OutFile '$env:TEMP\\Fortinet_CA_SSL.cer'; Import-Certificate -FilePath '$env:TEMP\\Fortinet_CA_SSL.cer' -CertStoreLocation Cert:\\CurrentUser\\Root; (New-Object -ComObject WScript.Shell).Popup('Fortinet Certificate Installed Successfully!', 0, 'King''s School Bruton Security', 64)"`;
+        // Auto-elevates to Admin via UAC to write directly to Cert:\LocalMachine\Root
+        const fullCmd = `powershell -ExecutionPolicy Bypass -Command "Start-Process powershell -Verb RunAs -ArgumentList '-ExecutionPolicy Bypass -NoProfile -Command \"Invoke-WebRequest -Uri ''${certUrl}'' -OutFile ''$env:TEMP\\Fortinet_CA_SSL.cer''; Import-Certificate -FilePath ''$env:TEMP\\Fortinet_CA_SSL.cer'' -CertStoreLocation Cert:\\LocalMachine\\Root; (New-Object -ComObject WScript.Shell).Popup(''Fortinet Certificate Installed Successfully (Local Machine)!'', 0, ''King''''s School Bruton Security'', 64)\"'"`;
 
         navigator.clipboard.writeText(fullCmd).then(() => {
             const btn = document.getElementById('copy-btn');
@@ -338,7 +356,7 @@
                     1. Copy Auto-Install Command
                 </button>
                 <div class="cmd-preview">
-                    powershell -ExecutionPolicy Bypass -Command "Invoke-WebRequest -Uri '${window.location.origin}/Fortinet_CA_SSL.cer'..."
+                    powershell -ExecutionPolicy Bypass -Command "Start-Process powershell -Verb RunAs..."
                 </div>
             `;
         } else if (os === 'android') {
