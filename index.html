@@ -331,12 +331,11 @@
     function copyPowerShellCommand() {
         const certUrl = window.location.origin + '/Fortinet_CA_SSL.cer';
         
-        // Quadruple backslashes ensure JS template strings emit double backslashes to PowerShell
-        const adminScript = `
-            Invoke-WebRequest -Uri '${certUrl}' -OutFile '\\$env:TEMP\\Fortinet_CA_SSL.cer';
-            Import-Certificate -FilePath '\\$env:TEMP\\Fortinet_CA_SSL.cer' -CertStoreLocation 'Cert:\\\\LocalMachine\\\\Root';
-            (New-Object -ComObject WScript.Shell).Popup('Fortinet Certificate Installed Successfully (Local Machine)!', 0, 'Kings School Bruton Security', 64);
-        `;
+        // Uses C:\Windows\Temp directly to completely bypass $env:TEMP JS variable expansion errors
+        const adminScript = "Invoke-WebRequest -Uri '" + certUrl + "' -OutFile 'C:\\Windows\\Temp\\Fortinet_CA_SSL.cer'; " +
+                            "Import-Certificate -FilePath 'C:\\Windows\\Temp\\Fortinet_CA_SSL.cer' -CertStoreLocation 'Cert:\\LocalMachine\\Root'; " +
+                            "Remove-Item 'C:\\Windows\\Temp\\Fortinet_CA_SSL.cer' -ErrorAction SilentlyContinue; " +
+                            "(New-Object -ComObject WScript.Shell).Popup('Fortinet Certificate Installed Successfully!', 0, 'Kings School Bruton Security', 64);";
 
         // Encode payload as UTF-16LE Base64
         const utf16Bytes = new Uint16Array(adminScript.length);
@@ -345,8 +344,8 @@
         }
         const base64Script = btoa(String.fromCharCode(...new Uint8Array(utf16Bytes.buffer)));
 
-        // Launch elevated PowerShell window
-        const fullCmd = `powershell -ExecutionPolicy Bypass -Command "Start-Process powershell -Verb RunAs -ArgumentList '-ExecutionPolicy Bypass -NoProfile -EncodedCommand ${base64Script}'"`;
+        // Wrapper command to elevate UAC and execute script cleanly
+        const fullCmd = "powershell -ExecutionPolicy Bypass -Command \"Start-Process powershell -Verb RunAs -ArgumentList '-ExecutionPolicy Bypass -NoProfile -EncodedCommand " + base64Script + "'\"";
 
         navigator.clipboard.writeText(fullCmd).then(() => {
             const btn = document.getElementById('copy-btn');
