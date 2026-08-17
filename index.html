@@ -3,18 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>School Web Filter Certificate Setup</title>
+    <title>King's School Bruton - Web Security Certificate Setup</title>
     <style>
         :root {
-            --primary: #2563eb;
-            --primary-hover: #1d4ed8;
-            --bg: #f8fafc;
+            --kings-navy: #0b1d3a;
+            --kings-navy-hover: #152e57;
+            --kings-gold: #c5a059;
+            --kings-gold-hover: #b08c46;
+            --bg: #f4f6f9;
             --card-bg: #ffffff;
-            --text: #0f172a;
+            --text: #1e293b;
             --subtext: #475569;
             --border: #cbd5e1;
-            --accent-bg: #eff6ff;
-            --success: #16a34a;
+            --accent-bg: #f0f4f8;
+            --success: #15803d;
         }
 
         body {
@@ -38,74 +40,82 @@
             margin-bottom: 24px;
         }
 
+        .header img.logo {
+            max-width: 180px;
+            height: auto;
+            margin-bottom: 12px;
+        }
+
         .header h1 {
-            font-size: 1.6rem;
-            margin: 0 0 8px 0;
-            color: var(--text);
+            font-size: 1.5rem;
+            margin: 0 0 6px 0;
+            color: var(--kings-navy);
+            font-weight: 700;
         }
 
         .card {
             background: var(--card-bg);
             border: 1px solid var(--border);
-            border-radius: 12px;
+            border-top: 4px solid var(--kings-gold);
+            border-radius: 8px;
             padding: 24px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 12px rgba(11, 29, 58, 0.06);
             margin-bottom: 20px;
         }
 
         .os-badge {
             display: inline-block;
             background: var(--accent-bg);
-            color: var(--primary);
+            color: var(--kings-navy);
             font-weight: 600;
             font-size: 0.85rem;
-            padding: 4px 12px;
+            padding: 4px 14px;
             border-radius: 9999px;
             margin-bottom: 16px;
+            border: 1px solid var(--border);
         }
 
         .download-btn {
             display: block;
             width: 100%;
-            background-color: var(--primary);
+            background-color: var(--kings-navy);
             color: white;
             text-align: center;
             padding: 14px 0;
-            border-radius: 8px;
+            border-radius: 6px;
             text-decoration: none;
             font-weight: 700;
             font-size: 1.05rem;
             border: none;
             cursor: pointer;
             box-sizing: border-box;
-            transition: background-color 0.2s;
+            transition: background-color 0.2s, transform 0.1s;
         }
 
         .download-btn:hover {
-            background-color: var(--primary-hover);
+            background-color: var(--kings-navy-hover);
         }
 
         .download-btn.copied {
             background-color: var(--success) !important;
         }
 
-        /* Command Box Display */
         .cmd-preview {
-            background-color: #0f172a;
-            color: #38bdf8;
+            background-color: #0b1d3a;
+            color: #7dd3fc;
             padding: 12px;
             border-radius: 6px;
             font-family: monospace;
-            font-size: 0.82rem;
+            font-size: 0.8rem;
             word-break: break-all;
             margin-top: 10px;
             text-align: left;
+            border-left: 3px solid var(--kings-gold);
         }
 
-        /* OS Tab Switcher */
         .tab-group {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             margin-bottom: 16px;
             overflow-x: auto;
             padding-bottom: 4px;
@@ -126,9 +136,9 @@
         }
 
         .tab-btn.active {
-            background: var(--primary);
+            background: var(--kings-navy);
             color: white;
-            border-color: var(--primary);
+            border-color: var(--kings-navy);
         }
 
         .os-guide {
@@ -165,31 +175,38 @@
             border-radius: 4px;
             font-size: 0.9em;
         }
+
+        .footer {
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--subtext);
+            margin-top: 24px;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="header">
-        <h1>School Wi-Fi & Web Security Setup</h1>
-        <p style="color: var(--subtext); margin: 0;">Install the Fortinet Security Certificate to enable HTTPS filtering and secure internet access.</p>
+        <!-- Logo Image File stored in root directory -->
+        <img src="logo.png" alt="King's School Bruton" class="logo" onerror="this.style.display='none'">
+        <h1>Wi-Fi Security Certificate Setup</h1>
+        <p style="color: var(--subtext); margin: 0; font-size: 0.95rem;">Install the Fortinet Security Certificate to enable HTTPS filtering and secure internet access on BYOD devices.</p>
     </div>
 
-    <!-- Hero Card with Dynamic OS Actions -->
+    <!-- Main Card -->
     <div class="card" style="text-align: center;">
         <span class="os-badge" id="detected-os-badge">Detecting Device...</span>
         
-        <!-- Primary Action Container -->
         <div id="hero-action-container">
-            <!-- Dynamically populated via JavaScript -->
+            <!-- Dynamic Buttons Populated Here -->
         </div>
     </div>
 
-    <!-- Instruction Card with Manual OS Tabs -->
+    <!-- Detailed OS Instructions Card -->
     <div class="card">
-        <h2 style="font-size: 1.1rem; margin-top: 0; margin-bottom: 12px;">Installation Instructions</h2>
+        <h2 style="font-size: 1.1rem; margin-top: 0; margin-bottom: 12px; color: var(--kings-navy);">Manual Installation Guides</h2>
         
-        <!-- Manual OS Selector Tabs -->
         <div class="tab-group">
             <button class="tab-btn" id="tab-windows" onclick="switchOS('windows')">Windows</button>
             <button class="tab-btn" id="tab-ios" onclick="switchOS('ios')">iOS / iPadOS</button>
@@ -201,24 +218,23 @@
         <div id="guide-windows" class="os-guide">
             <ol>
                 <li>Click <strong>Copy Auto-Install Command</strong> above.</li>
-                <li>Press <code>Win + R</code> on your keyboard, type <code>powershell</code>, and press <strong>Enter</strong>.</li>
-                <li>Right-click in the blue window to paste, then press <strong>Enter</strong>.</li>
+                <li>Press <code>Win + R</code>, type <code>powershell</code>, and press <strong>Enter</strong>.</li>
+                <li>Right-click in the window to paste, then press <strong>Enter</strong>.</li>
             </ol>
             <p style="font-size: 0.85rem; color: var(--subtext); margin-top: 10px;">
-                <em>Alternatively, <a href="Fortinet_CA_SSL.crt" download="Fortinet_CA_SSL.crt">download the .crt file directly</a> to install manually.</em>
+                <em>Alternatively, <a href="Fortinet_CA_SSL.cer" download="Fortinet_CA_SSL.cer">download Fortinet_CA_SSL.cer directly</a> to install via the Windows Wizard.</em>
             </p>
         </div>
 
         <!-- iOS / iPadOS Guide -->
         <div id="guide-ios" class="os-guide">
             <ol>
-                <li>Tap <strong>Download Fortinet Certificate</strong> above and tap <strong>Allow</strong> on the prompt.</li>
-                <li>Open your device <strong>Settings</strong> app.</li>
-                <li>Tap <strong>Profile Downloaded</strong> (near the top).</li>
+                <li>Tap <strong>Download Certificate</strong> above and tap <strong>Allow</strong>.</li>
+                <li>Open <strong>Settings</strong> and tap <strong>Profile Downloaded</strong> near the top.</li>
                 <li>Tap <strong>Install</strong> in the top-right corner and enter your passcode.</li>
             </ol>
             <div class="alert-box">
-                <strong>Mandatory iOS Step:</strong><br>
+                <strong>Mandatory Step for iOS:</strong><br>
                 Go to <code>Settings > General > About > Certificate Trust Settings</code>.<br>
                 Under "Enable full trust for root certificates", toggle <strong>ON</strong> trust for <strong>Fortinet_CA_SSL</strong>.
             </div>
@@ -227,8 +243,8 @@
         <!-- Android Guide -->
         <div id="guide-android" class="os-guide">
             <ol>
-                <li>Tap <strong>Download Fortinet Certificate (.crt)</strong> above.</li>
-                <li>If prompted by Android, select <strong>CA Certificate / Wi-Fi Certificate</strong> to install directly.</li>
+                <li>Tap <strong>Download Certificate (.crt)</strong> above.</li>
+                <li>If prompted by Android, select <strong>CA Certificate</strong> or <strong>Wi-Fi Certificate</strong>.</li>
                 <li>If not prompted, open <strong>Settings</strong> &rarr; Search for <strong>CA Certificate</strong>.</li>
                 <li>Select <code>Fortinet_CA_SSL.crt</code> from your Downloads folder.</li>
             </ol>
@@ -237,13 +253,17 @@
         <!-- macOS Guide -->
         <div id="guide-mac" class="os-guide">
             <ol>
-                <li>Click <strong>Download Fortinet Certificate</strong> above and double-click the file to open.</li>
-                <li>In <strong>Keychain Access</strong>, locate <code>Fortinet_CA_SSL</code> under <em>login</em> or <em>System</em>.</li>
+                <li>Click <strong>Download Certificate</strong> above and double-click the file to open.</li>
+                <li>In <strong>Keychain Access</strong>, find <code>Fortinet_CA_SSL</code> under <em>login</em> or <em>System</em>.</li>
                 <li>Double-click the certificate and expand <strong>Trust</strong>.</li>
-                <li>Change <em>When using this certificate</em> to <strong>Always Trust</strong>.</li>
+                <li>Set <em>When using this certificate</em> to <strong>Always Trust</strong>.</li>
                 <li>Close Keychain Access and enter your Mac password to confirm.</li>
             </ol>
         </div>
+    </div>
+
+    <div class="footer">
+        King's School Bruton &bull; IT Support Department
     </div>
 </div>
 
@@ -262,9 +282,8 @@
     }
 
     function copyPowerShellCommand() {
-        // Construct complete CRT URL dynamically based on host location
-        const certUrl = window.location.origin + '/Fortinet_CA_SSL.crt';
-        const fullCmd = `powershell -ExecutionPolicy Bypass -Command "Invoke-WebRequest -Uri '${certUrl}' -OutFile '$env:TEMP\\Fortinet_CA_SSL.crt'; Import-Certificate -FilePath '$env:TEMP\\Fortinet_CA_SSL.crt' -CertStoreLocation Cert:\\CurrentUser\\Root; [System.Windows.Forms.MessageBox]::Show('Fortinet Certificate Installed Successfully!','School Security');"`;
+        const certUrl = window.location.origin + '/Fortinet_CA_SSL.cer';
+        const fullCmd = `powershell -ExecutionPolicy Bypass -Command "Invoke-WebRequest -Uri '${certUrl}' -OutFile '$env:TEMP\\Fortinet_CA_SSL.cer'; Import-Certificate -FilePath '$env:TEMP\\Fortinet_CA_SSL.cer' -CertStoreLocation Cert:\\CurrentUser\\Root; (New-Object -ComObject WScript.Shell).Popup('Fortinet Certificate Installed Successfully!', 0, 'King\\'s School Bruton Security', 64)"`;
 
         navigator.clipboard.writeText(fullCmd).then(() => {
             const btn = document.getElementById('copy-btn');
@@ -291,7 +310,7 @@
         const actionContainer = document.getElementById('hero-action-container');
 
         if (os === 'windows') {
-            const certUrl = window.location.origin + '/Fortinet_CA_SSL.crt';
+            const certUrl = window.location.origin + '/Fortinet_CA_SSL.cer';
             actionContainer.innerHTML = `
                 <button id="copy-btn" class="download-btn" onclick="copyPowerShellCommand()">
                     1. Copy Auto-Install Command
@@ -300,10 +319,16 @@
                     powershell -ExecutionPolicy Bypass -Command "Invoke-WebRequest -Uri '${certUrl}'..."
                 </div>
             `;
-        } else {
+        } else if (os === 'android') {
             actionContainer.innerHTML = `
                 <a href="Fortinet_CA_SSL.crt" id="download-link" class="download-btn" download="Fortinet_CA_SSL.crt">
-                    1. Download Fortinet Certificate (.crt)
+                    1. Download Certificate (.crt)
+                </a>
+            `;
+        } else {
+            actionContainer.innerHTML = `
+                <a href="Fortinet_CA_SSL.cer" id="download-link" class="download-btn" download="Fortinet_CA_SSL.cer">
+                    1. Download Certificate (.cer)
                 </a>
             `;
         }
