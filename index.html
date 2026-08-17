@@ -305,8 +305,8 @@
     function copyPowerShellCommand() {
         const certUrl = window.location.origin + '/Fortinet_CA_SSL.cer';
         
-        // Universal COM Popup payload using WScript.Shell (removes System.Windows.Forms dependency)
-        const fullCmd = `powershell -ExecutionPolicy Bypass -Command "Invoke-WebRequest -Uri '${certUrl}' -OutFile '$env:TEMP\\Fortinet_CA_SSL.cer'; Import-Certificate -FilePath '$env:TEMP\\Fortinet_CA_SSL.cer' -CertStoreLocation Cert:\\CurrentUser\\Root; (New-Object -ComObject WScript.Shell).Popup('Fortinet Certificate Installed Successfully!', 0, 'King\\'s School Bruton Security', 64)"`;
+        // Universal COM Popup payload using WScript.Shell with corrected '' quote escaping for PowerShell
+        const fullCmd = `powershell -ExecutionPolicy Bypass -Command "Invoke-WebRequest -Uri '${certUrl}' -OutFile '$env:TEMP\\Fortinet_CA_SSL.cer'; Import-Certificate -FilePath '$env:TEMP\\Fortinet_CA_SSL.cer' -CertStoreLocation Cert:\\CurrentUser\\Root; (New-Object -ComObject WScript.Shell).Popup('Fortinet Certificate Installed Successfully!', 0, 'King''s School Bruton Security', 64)"`;
 
         navigator.clipboard.writeText(fullCmd).then(() => {
             const btn = document.getElementById('copy-btn');
@@ -333,13 +333,12 @@
         const actionContainer = document.getElementById('hero-action-container');
 
         if (os === 'windows') {
-            const certUrl = window.location.origin + '/Fortinet_CA_SSL.cer';
             actionContainer.innerHTML = `
                 <button id="copy-btn" class="download-btn" onclick="copyPowerShellCommand()">
                     1. Copy Auto-Install Command
                 </button>
                 <div class="cmd-preview">
-                    powershell -ExecutionPolicy Bypass -Command "Invoke-WebRequest -Uri '${certUrl}'..."
+                    powershell -ExecutionPolicy Bypass -Command "Invoke-WebRequest -Uri '${window.location.origin}/Fortinet_CA_SSL.cer'..."
                 </div>
             `;
         } else if (os === 'android') {
