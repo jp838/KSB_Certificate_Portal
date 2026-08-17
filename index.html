@@ -331,14 +331,14 @@
     function copyPowerShellCommand() {
         const certUrl = window.location.origin + '/Fortinet_CA_SSL.cer';
         
-        // Inner script that downloads and installs the certificate into the Local Machine store
+        // \$env is escaped so JavaScript backtick template literals retain the $ sign
         const adminScript = `
-            Invoke-WebRequest -Uri '${certUrl}' -OutFile '$env:TEMP\\Fortinet_CA_SSL.cer';
-            Import-Certificate -FilePath '$env:TEMP\\Fortinet_CA_SSL.cer' -CertStoreLocation 'Cert:\\LocalMachine\\Root';
+            Invoke-WebRequest -Uri '${certUrl}' -OutFile '\$env:TEMP\\Fortinet_CA_SSL.cer';
+            Import-Certificate -FilePath '\$env:TEMP\\Fortinet_CA_SSL.cer' -CertStoreLocation 'Cert:\\LocalMachine\\Root';
             (New-Object -ComObject WScript.Shell).Popup('Fortinet Certificate Installed Successfully (Local Machine)!', 0, 'Kings School Bruton Security', 64);
         `;
 
-        // Encode payload as UTF-16LE Base64 to make it 100% immune to quote parsing errors across terminals
+        // Encode payload as UTF-16LE Base64
         const utf16Bytes = new Uint16Array(adminScript.length);
         for (let i = 0; i < adminScript.length; i++) {
             utf16Bytes[i] = adminScript.charCodeAt(i);
