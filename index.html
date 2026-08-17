@@ -331,10 +331,10 @@
     function copyPowerShellCommand() {
         const certUrl = window.location.origin + '/Fortinet_CA_SSL.cer';
         
-        // \$env is escaped so JavaScript backtick template literals retain the $ sign
+        // Quadruple backslashes ensure JS template strings emit double backslashes to PowerShell
         const adminScript = `
-            Invoke-WebRequest -Uri '${certUrl}' -OutFile '\$env:TEMP\\Fortinet_CA_SSL.cer';
-            Import-Certificate -FilePath '\$env:TEMP\\Fortinet_CA_SSL.cer' -CertStoreLocation 'Cert:\\LocalMachine\\Root';
+            Invoke-WebRequest -Uri '${certUrl}' -OutFile '\\$env:TEMP\\Fortinet_CA_SSL.cer';
+            Import-Certificate -FilePath '\\$env:TEMP\\Fortinet_CA_SSL.cer' -CertStoreLocation 'Cert:\\\\LocalMachine\\\\Root';
             (New-Object -ComObject WScript.Shell).Popup('Fortinet Certificate Installed Successfully (Local Machine)!', 0, 'Kings School Bruton Security', 64);
         `;
 
@@ -345,7 +345,7 @@
         }
         const base64Script = btoa(String.fromCharCode(...new Uint8Array(utf16Bytes.buffer)));
 
-        // Wrapper command to launch an elevated administrative PowerShell window
+        // Launch elevated PowerShell window
         const fullCmd = `powershell -ExecutionPolicy Bypass -Command "Start-Process powershell -Verb RunAs -ArgumentList '-ExecutionPolicy Bypass -NoProfile -EncodedCommand ${base64Script}'"`;
 
         navigator.clipboard.writeText(fullCmd).then(() => {
