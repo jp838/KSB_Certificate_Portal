@@ -331,8 +331,22 @@
     function copyPowerShellCommand() {
         const certUrl = window.location.origin + '/Fortinet_CA_SSL.cer';
         
-        // Removed apostrophe in "Kings School Bruton" to prevent string parsing errors inside nested PowerShell execution
-        const fullCmd = `powershell -ExecutionPolicy Bypass -Command "Start-Process powershell -Verb RunAs -ArgumentList '-ExecutionPolicy Bypass -NoProfile -Command \"Invoke-WebRequest -Uri ''${certUrl}'' -OutFile ''$env:TEMP\\\\Fortinet_CA_SSL.cer''; Import-Certificate -FilePath ''$env:TEMP\\\\Fortinet_CA_SSL.cer'' -CertStoreLocation ''Cert:\\\\LocalMachine\\\\Root''; (New-Object -ComObject WScript.Shell).Popup(''Fortinet Certificate Installed Successfully (Local Machine)!'', 0, ''Kings School Bruton Security'', 64)\"'"`;
+        // Inner script that downloads and installs the certificate into the Local Machine store
+        const adminScript = `
+            Invoke-WebRequest -Uri '${certUrl}' -OutFile '$env:TEMP\\Fortinet_CA_SSL.cer';
+            Import-Certificate -FilePath '$env:TEMP\\Fortinet_CA_SSL.cer' -CertStoreLocation 'Cert:\\LocalMachine\\Root';
+            (New-Object -ComObject WScript.Shell).Popup('Fortinet Certificate Installed Successfully (Local Machine)!', 0, 'Kings School Bruton Security', 64);
+        `;
+
+        // Encode payload as UTF-16LE Base64 to make it 100% immune to quote parsing errors across terminals
+        const utf16Bytes = new Uint16Array(adminScript.length);
+        for (let i = 0; i < adminScript.length; i++) {
+            utf16Bytes[i] = adminScript.charCodeAt(i);
+        }
+        const base64Script = btoa(String.fromCharCode(...new Uint8Array(utf16Bytes.buffer)));
+
+        // Wrapper command to launch an elevated administrative PowerShell window
+        const fullCmd = `powershell -ExecutionPolicy Bypass -Command "Start-Process powershell -Verb RunAs -ArgumentList '-ExecutionPolicy Bypass -NoProfile -EncodedCommand ${base64Script}'"`;
 
         navigator.clipboard.writeText(fullCmd).then(() => {
             const btn = document.getElementById('copy-btn');
