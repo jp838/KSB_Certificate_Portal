@@ -263,14 +263,16 @@
         <!-- iOS / iPadOS Guide -->
         <div id="guide-ios" class="os-guide">
             <ol>
-                <li>Tap <strong>Download Security Profile</strong> above and tap <strong>Allow</strong>.</li>
-                <li>Open <strong>Settings</strong> and tap <strong>Profile Downloaded</strong> near the top.</li>
-                <li>Tap <strong>Install</strong> in the top-right corner and enter your passcode.</li>
+                <li>Ensure you are using <strong>Safari</strong> (Chrome/Firefox on iOS will not install profiles).</li>
+                <li>Tap <strong>Install Security Profile</strong> above and tap <strong>Allow</strong> if prompted.</li>
+                <li>Open the <strong>Settings</strong> app on your iPad or iPhone.</li>
+                <li>Tap <strong>Profile Downloaded</strong> near the top (under your Apple ID).</li>
+                <li>Tap <strong>Install</strong> in the top-right corner and enter your device passcode.</li>
             </ol>
             <div class="alert-box">
-                <strong>Mandatory Step for iOS:</strong><br>
+                <strong>Mandatory Final Step for iOS:</strong><br>
                 Go to <code>Settings > General > About > Certificate Trust Settings</code>.<br>
-                Under "Enable full trust for root certificates", toggle <strong>ON</strong> trust for <strong>Fortinet_CA_SSL</strong>.
+                Under "Enable full trust for root certificates", toggle <strong>ON</strong> trust for <strong>King's School Bruton Web Security</strong> (or Fortinet_CA_SSL).
             </div>
         </div>
 
@@ -287,7 +289,7 @@
         <!-- macOS Guide -->
         <div id="guide-mac" class="os-guide">
             <ol>
-                <li>Click <strong>Download macOS Security Profile</strong> above.</li>
+                <li>Click <strong>Install Security Profile</strong> above.</li>
                 <li>Open <strong>System Settings</strong> (or System Preferences) &rarr; search for <strong>Profiles</strong>.</li>
                 <li>Double-click <strong>King's School Bruton Web Security</strong> and click <strong>Install...</strong></li>
                 <li>Enter your Mac password when prompted to complete installation.</li>
@@ -360,8 +362,8 @@
             `;
         } else if (os === 'mac' || os === 'ios') {
             actionContainer.innerHTML = `
-                <a href="Fortinet_CA_SSL.mobileconfig" id="download-link" class="download-btn">
-                    1. Download Security Profile (.mobileconfig)
+                <a href="/Fortinet_CA_SSL.mobileconfig" id="download-link" class="download-btn" target="_self">
+                    1. Install Security Profile (.mobileconfig)
                 </a>
             `;
         } else if (os === 'android') {
