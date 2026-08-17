@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>PayloadContent</key>
+    <array>
+        <dict>
+            <key>PayloadCertificateFileName</key>
+            <string>Fortinet_CA_SSL.cer</string>
+            <string>Fortinet CA SSL - King's School Bruton</string>
+            <key>PayloadContent</key>
+            <data>MIIEEjCCAvqgAwIBAgIIFqaFd/TOFhYwDQYJKoZIhvcNAQELBQAwgakxCzAJBgNV
+BAYTAlVTMRMwEQYDVQQIDApDYWxpZm9ybmlhMRIwEAYDVQQHDAlTdW5ueXZhbGUx
+ETAPBgNVBAoMCEZvcnRpbmV0MR4wHAYDVQQLDBVDZXJ0aWZpY2F0ZSBBdXRob3Jp
+dHkxGTAXBgNVBAMMEEZHVDgwRlRLMjIwNDgzMDMxIzAhBgkqhkiG9w0BCQEWFHN1
+cHBvcnRAZm9ydGluZXQuY29tMB4XDTI2MDgwNTE0MDQzNFoXDTM2MDgwNTE0MDQz
+NFowgakxCzAJBgNVBAYTAlVTMRMwEQYDVQQIDApDYWxpZm9ybmlhMRIwEAYDVQQH
+DAlTdW5ueXZhbGUxETAPBgNVBAoMCEZvcnRpbmV0MR4wHAYDVQQLDBVDZXJ0aWZp
+Y2F0ZSBBdXRob3JpdHkxGTAXBgNVBAMMEEZHVDgwRlRLMjIwNDgzMDMxIzAhBgkq
+hkiG9w0BCQEWFHN1cHBvcnRAZm9ydGluZXQuY29tMIIBIjANBgkqhkiG9w0BAQEF
+AAOCAQ8AMIIBCgKCAQEAq/IK6/53PfJT/qQC6fbv/WMcMObBiKC4UUKzb4iiAO8a
+FcXIYe1Uh7TY/wfAN+zp/g3TZ3y9/RFnAd+l4OAhB3rAU/1yUPrA7hVclUOcS3VD
+7+jy7dNnJLJPwqaTIbgIxMNfvW0WF/DlpFt95jq8cpOxeHQzce97nZcM9NEDqK2Z
+mxxq1wnZ8oHH4oBq74MFM5db48kHKZzIgYgwbYLw5Qcv1/65PIWQdsmHDB1rlOZN
+qgD9KoGWe7FPZHjTxs5WnGuDyxBO4CIWt1Y0WiC24Ot5HFInYnrAFQNoEIkcmp6s
+NNCPa2NoxJXQo2FkyC0tBJmaP7Eo+1EQjcnVDbgNgwIDAQABozwwOjAMBgNVHRME
+BTADAQH/MAsGA1UdDwQEAwICBDAdBgNVHQ4EFgQU4aUUsV6M/7UE+2XqOmg55MZj
+GpQwDQYJKoZIhvcNAQELBQADggEBAEsxurOdQVGPsNQApGwOWDfPTgWKIIz8SHTO
+XKbBRVq7nc2dktqjPwww5xCS76snm9roccnzdnxmxwR6csqD4+IQcLrE98oUhEU1
+ZbegwOBnvjiIvYKacmzifck1Gf4IxP6M0Vzr5AKUNNWvDaL8BvcyiheTFv7kVUOu
+mGwVWjh6TINBJMtM1Nc+Lg0dP34ELXTYmgi9N1RmoReInwEHqey6btTmgH3K+KFk
+FDHHAGcZNF/BTfGXRTwNyst4bz0wgnpUvrxV6lRR10uS9DND84sMUrij8kmU3QP0
+CdsXedRNBIaSSTiN8r5Wcjsm7OsoCIQIeYI/As2nyDGRV8EX09k=</data>
+            <key>PayloadDescription</key>
+            <string>Installs the Fortinet CA Root Certificate for secure network inspection.</string>
+            <key>PayloadDisplayName</key>
+            <string>King's School Bruton - Security Certificate</string>
+            <key>PayloadIdentifier</key>
+            <string>com.kingsbruton.security.cert</string>
+            <key>PayloadType</key>
+            <string>com.apple.security.pkcs12</string>
+            <key>PayloadUUID</key>
+            <string>8A1F3C4B-2D5E-4B6A-91A2-8C4D5E6F7A8B</string>
+            <key>PayloadVersion</key>
+            <integer>1</integer>
+        </dict>
+    </array>
+    <key>PayloadDescription</key>
+    <string>Configures trusted root CA certificate for King's School Bruton web filter.</string>
+    <key>PayloadDisplayName</key>
+    <string>King's School Bruton Web Security</string>
+    <key>PayloadIdentifier</key>
+    <string>com.kingsbruton.security.profile</string>
+    <key>PayloadOrganization</key>
+    <string>King's School Bruton</string>
+    <key>PayloadRemovalDisallowed</key>
+    <false/>
+    <key>PayloadType</key>
+    <string>Configuration</string>
+    <key>PayloadUUID</key>
+    <string>1A2B3C4D-5E6F-7A8B-9C0D-1E2F3A4B5C6D</string>
+    <key>PayloadVersion</key>
+    <integer>1</integer>
+</dict>
+</plist>
