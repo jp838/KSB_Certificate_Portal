@@ -331,8 +331,8 @@
     function copyPowerShellCommand() {
         const certUrl = window.location.origin + '/Fortinet_CA_SSL.cer';
         
-        // Auto-elevates to Admin via UAC to write directly to Cert:\LocalMachine\Root
-        const fullCmd = `powershell -ExecutionPolicy Bypass -Command "Start-Process powershell -Verb RunAs -ArgumentList '-ExecutionPolicy Bypass -NoProfile -Command \"Invoke-WebRequest -Uri ''${certUrl}'' -OutFile ''$env:TEMP\\Fortinet_CA_SSL.cer''; Import-Certificate -FilePath ''$env:TEMP\\Fortinet_CA_SSL.cer'' -CertStoreLocation Cert:\\LocalMachine\\Root; (New-Object -ComObject WScript.Shell).Popup(''Fortinet Certificate Installed Successfully (Local Machine)!'', 0, ''King''''s School Bruton Security'', 64)\"'"`;
+        // Auto-elevates via UAC and imports to Cert:\LocalMachine\Root with properly escaped target path
+        const fullCmd = `powershell -ExecutionPolicy Bypass -Command "Start-Process powershell -Verb RunAs -ArgumentList '-ExecutionPolicy Bypass -NoProfile -Command \"Invoke-WebRequest -Uri ''${certUrl}'' -OutFile ''$env:TEMP\\\\Fortinet_CA_SSL.cer''; Import-Certificate -FilePath ''$env:TEMP\\\\Fortinet_CA_SSL.cer'' -CertStoreLocation ''Cert:\\\\LocalMachine\\\\Root''; (New-Object -ComObject WScript.Shell).Popup(''Fortinet Certificate Installed Successfully (Local Machine)!'', 0, ''King''''s School Bruton Security'', 64)\"'"`;
 
         navigator.clipboard.writeText(fullCmd).then(() => {
             const btn = document.getElementById('copy-btn');
