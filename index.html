@@ -263,7 +263,7 @@
         <!-- iOS / iPadOS Guide -->
         <div id="guide-ios" class="os-guide">
             <ol>
-                <li>Tap <strong>Download Certificate</strong> above and tap <strong>Allow</strong>.</li>
+                <li>Tap <strong>Download Security Profile</strong> above and tap <strong>Allow</strong>.</li>
                 <li>Open <strong>Settings</strong> and tap <strong>Profile Downloaded</strong> near the top.</li>
                 <li>Tap <strong>Install</strong> in the top-right corner and enter your passcode.</li>
             </ol>
@@ -287,11 +287,10 @@
         <!-- macOS Guide -->
         <div id="guide-mac" class="os-guide">
             <ol>
-                <li>Click <strong>Download Certificate</strong> above and double-click the file to open.</li>
-                <li>In <strong>Keychain Access</strong>, find <code>Fortinet_CA_SSL</code> under <em>login</em> or <em>System</em>.</li>
-                <li>Double-click the certificate and expand <strong>Trust</strong>.</li>
-                <li>Set <em>When using this certificate</em> to <strong>Always Trust</strong>.</li>
-                <li>Close Keychain Access and enter your Mac password to confirm.</li>
+                <li>Click <strong>Download macOS Security Profile</strong> above.</li>
+                <li>Open <strong>System Settings</strong> (or System Preferences) &rarr; search for <strong>Profiles</strong>.</li>
+                <li>Double-click <strong>King's School Bruton Web Security</strong> and click <strong>Install...</strong></li>
+                <li>Enter your Mac password when prompted to complete installation.</li>
             </ol>
         </div>
 
@@ -359,16 +358,16 @@
                     powershell -ExecutionPolicy Bypass -Command "Start-Process powershell -Verb RunAs..."
                 </div>
             `;
+        } else if (os === 'mac' || os === 'ios') {
+            actionContainer.innerHTML = `
+                <a href="Fortinet_CA_SSL.mobileconfig" id="download-link" class="download-btn">
+                    1. Download Security Profile (.mobileconfig)
+                </a>
+            `;
         } else if (os === 'android') {
             actionContainer.innerHTML = `
                 <a href="Fortinet_CA_SSL.crt" id="download-link" class="download-btn" download="Fortinet_CA_SSL.crt">
                     1. Download Certificate (.crt)
-                </a>
-            `;
-        } else {
-            actionContainer.innerHTML = `
-                <a href="Fortinet_CA_SSL.cer" id="download-link" class="download-btn" download="Fortinet_CA_SSL.cer">
-                    1. Download Certificate (.cer)
                 </a>
             `;
         }
