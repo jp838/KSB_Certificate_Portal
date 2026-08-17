@@ -263,7 +263,7 @@
         <!-- iOS / iPadOS Guide -->
         <div id="guide-ios" class="os-guide">
             <ol>
-                <li>Ensure you are using <strong>Safari</strong> (Chrome/Firefox on iOS will not install profiles).</li>
+                <li>Ensure you are using <strong>Safari</strong> (Chrome/Firefox/Outlook on iOS will block profile setup).</li>
                 <li>Tap <strong>Install Security Profile</strong> above and tap <strong>Allow</strong> if prompted.</li>
                 <li>Open the <strong>Settings</strong> app on your iPad or iPhone.</li>
                 <li>Tap <strong>Profile Downloaded</strong> near the top (under your Apple ID).</li>
@@ -321,6 +321,13 @@
         return 'windows';
     }
 
+    function isiOSNonSafari() {
+        const userAgent = navigator.userAgent || '';
+        const isIOS = /iPad|iPhone|iPod/.test(userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+        const isOtherBrowser = /CriOS|FxiOS|EdgiOS|GSA|FBAN|FBAV|Instagram|Line|Twitter/i.test(userAgent);
+        return isIOS && isOtherBrowser;
+    }
+
     function copyPowerShellCommand() {
         const certUrl = window.location.origin + '/Fortinet_CA_SSL.cer';
         
@@ -358,6 +365,13 @@
                 </button>
                 <div class="cmd-preview">
                     powershell -ExecutionPolicy Bypass -Command "Start-Process powershell -Verb RunAs..."
+                </div>
+            `;
+        } else if (os === 'ios' && isiOSNonSafari()) {
+            actionContainer.innerHTML = `
+                <div class="alert-box" style="margin-top:0; text-align:left;">
+                    <strong>⚠️ Please open this page in Safari:</strong><br>
+                    Apple restricts profile installations from non-Safari browsers. Copy this page URL and open it directly in <strong>Safari</strong> to continue.
                 </div>
             `;
         } else if (os === 'mac' || os === 'ios') {
