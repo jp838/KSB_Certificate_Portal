@@ -7,7 +7,6 @@
         <dict>
             <key>PayloadCertificateFileName</key>
             <string>Fortinet_CA_SSL.cer</string>
-            <string>Fortinet CA SSL - King's School Bruton</string>
             <key>PayloadContent</key>
             <data>MIIEEjCCAvqgAwIBAgIIFqaFd/TOFhYwDQYJKoZIhvcNAQELBQAwgakxCzAJBgNV
 BAYTAlVTMRMwEQYDVQQIDApDYWxpZm9ybmlhMRIwEAYDVQQHDAlTdW5ueXZhbGUx
@@ -38,7 +37,7 @@ CdsXedRNBIaSSTiN8r5Wcjsm7OsoCIQIeYI/As2nyDGRV8EX09k=</data>
             <key>PayloadIdentifier</key>
             <string>com.kingsbruton.security.cert</string>
             <key>PayloadType</key>
-            <string>com.apple.security.pkcs12</string>
+            <string>com.apple.security.root</string>
             <key>PayloadUUID</key>
             <string>8A1F3C4B-2D5E-4B6A-91A2-8C4D5E6F7A8B</string>
             <key>PayloadVersion</key>
