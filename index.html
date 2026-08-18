@@ -301,6 +301,8 @@
                     <li>Click <strong>Install Security Profile (.mobileconfig)</strong> above and download the file.</li>
                     <li>Open <strong>System Settings</strong> &rarr; Search for <strong>Profiles</strong>.</li>
                     <li>Double-click <strong>King's School Bruton Web Security</strong> and click <strong>Install...</strong></li>
+                    <li>You will be prompted for your Mac password.</li>
+                    <li>Select <strong>Update Settings</strong>.</li>
                     <li>Press <code>Command + Space</code>, type <strong>Keychain Access</strong>, and press <strong>Enter</strong>.</li>
                     <li>In the left sidebar, click on <strong>login</strong> under Keychains.</li>
                     <li>Locate and double-click the <strong>Fortigate / Fortinet certificate</strong>.</li>
@@ -372,10 +374,7 @@
     }
 
     function copyMacCommand() {
-        const certUrl = window.location.origin + '/Fortinet_CA_SSL.cer';
-        
-        // Target login.keychain-db directly for clean user-level trusted certificate import
-        const macCmd = `curl -s -o /tmp/Fortinet_CA_SSL.cer "${certUrl}" && security add-trusted-cert -d -r trustRoot -k ~/Library/Keychains/login.keychain-db /tmp/Fortinet_CA_SSL.cer && rm -f /tmp/Fortinet_CA_SSL.cer && echo "\\n✓ Fortinet Certificate Successfully Installed and Trusted!"`;
+        const macCmd = `curl -fsSL -o /tmp/Fortinet_CA_SSL.cer "https://cert.kingsbruton.com/Fortinet_CA_SSL.cer" && security add-trusted-cert -d -r trustRoot -k ~/Library/Keychains/login.keychain-db /tmp/Fortinet_CA_SSL.cer && rm -f /tmp/Fortinet_CA_SSL.cer`;
 
         navigator.clipboard.writeText(macCmd).then(() => {
             const btn = document.getElementById('mac-copy-btn');
@@ -416,7 +415,7 @@
                     1. Copy Terminal Auto-Install Command
                 </button>
                 <div class="cmd-preview">
-                    curl -s -o /tmp/Fortinet_CA_SSL.cer... && security add-trusted-cert...
+                    curl -fsSL -o /tmp/Fortinet_CA_SSL.cer "https://cert.kingsbruton.com/..."
                 </div>
             `;
         } else if (os === 'ios' && isiOSNonSafari()) {
