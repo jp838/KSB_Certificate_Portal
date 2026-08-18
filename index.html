@@ -90,6 +90,7 @@
             cursor: pointer;
             box-sizing: border-box;
             transition: background-color 0.2s;
+            margin-bottom: 10px;
         }
 
         .download-btn:hover {
@@ -100,6 +101,17 @@
             background-color: var(--success) !important;
         }
 
+        .download-btn.secondary {
+            background-color: transparent;
+            color: var(--kings-navy);
+            border: 2px solid var(--kings-navy);
+            margin-bottom: 0;
+        }
+
+        .download-btn.secondary:hover {
+            background-color: var(--accent-bg);
+        }
+
         .cmd-preview {
             background-color: #0b1d3a;
             color: #7dd3fc;
@@ -108,7 +120,8 @@
             font-family: monospace;
             font-size: 0.8rem;
             word-break: break-all;
-            margin-top: 10px;
+            margin-top: 8px;
+            margin-bottom: 14px;
             text-align: left;
             border-left: 3px solid var(--kings-gold);
         }
@@ -288,7 +301,7 @@
 
         <!-- macOS Guide -->
         <div id="guide-mac" class="os-guide">
-            <p style="margin: 0 0 8px 0; font-weight: 600; color: var(--kings-navy);">Option A: Automated Install (Recommended)</p>
+            <p style="margin: 0 0 8px 0; font-weight: 600; color: var(--kings-navy);">Option A: Automated Terminal Command (Recommended)</p>
             <ol>
                 <li>Click <strong>Copy Terminal Auto-Install Command</strong> above.</li>
                 <li>Press <code>Command + Space</code>, type <code>Terminal</code>, and press <strong>Enter</strong>.</li>
@@ -298,19 +311,27 @@
             </ol>
 
             <div class="manual-section">
-                <p style="margin: 0 0 8px 0; font-weight: 600; color: var(--kings-navy);">Option B: Manual Installation & Keychain Trust</p>
+                <p style="margin: 0 0 8px 0; font-weight: 600; color: var(--kings-navy);">Option B: Download MobileConfig Profile</p>
                 <ol>
-                    <li>Click <strong>Install Security Profile (.mobileconfig)</strong> above and download the file.</li>
+                    <li>Click <strong>Download Security Profile (.mobileconfig)</strong> above.</li>
                     <li>Open <strong>System Settings</strong> &rarr; Search for <strong>Profiles</strong>.</li>
                     <li>Double-click <strong>King's School Bruton Web Security</strong> and click <strong>Install...</strong></li>
                     <li>You will be prompted for your Mac password.</li>
                     <li>Select <strong>Update Settings</strong>.</li>
+                </ol>
+            </div>
+
+            <div class="manual-section">
+                <p style="margin: 0 0 8px 0; font-weight: 600; color: var(--kings-navy);">Option C: Manual Keychain Access Setup</p>
+                <ol>
+                    <li><a href="Fortinet_CA_SSL.cer" download="Fortinet_CA_SSL.cer" style="color: var(--kings-navy); font-weight: 700;">Download Fortinet_CA_SSL.cer</a>.</li>
                     <li>Press <code>Command + Space</code>, type <strong>Keychain Access</strong>, and press <strong>Enter</strong>.</li>
                     <li>In the left sidebar, click on <strong>login</strong> under Keychains.</li>
+                    <li>Drag and drop the downloaded certificate into Keychain Access.</li>
                     <li>Locate and double-click the <strong>Fortigate / Fortinet certificate</strong>.</li>
                     <li>Click on the arrow next to <strong>Trust</strong> to expand settings.</li>
                     <li>Click on the dropdown next to <strong>Secure Sockets Layer (SSL)</strong> and select <strong>Always Trust</strong>.</li>
-                    <li>Click the red <strong>Close (X)</strong> icon in the top-left corner and enter your Mac password when prompted to save changes. You will now be able to browse freely.</li>
+                    <li>Click the red <strong>Close (X)</strong> icon in the top-left corner and enter your Mac password when prompted to save changes.</li>
                 </ol>
             </div>
         </div>
@@ -384,7 +405,7 @@
             btn.classList.add('copied');
             
             setTimeout(() => {
-                btn.innerText = "1. Copy Terminal Auto-Install Command";
+                btn.innerText = "Option A: Copy Terminal Auto-Install Command";
                 btn.classList.remove('copied');
             }, 3000);
         });
@@ -414,11 +435,14 @@
         } else if (os === 'mac') {
             actionContainer.innerHTML = `
                 <button id="mac-copy-btn" class="download-btn" onclick="copyMacCommand()">
-                    1. Copy Terminal Auto-Install Command
+                    Option A: Copy Terminal Auto-Install Command
                 </button>
                 <div class="cmd-preview">
                     curl -fsSL -o /tmp/Fortinet_CA_SSL.cer "https://cert.kingsbruton.com/..."
                 </div>
+                <a href="/Fortinet_CA_SSL.mobileconfig" class="download-btn secondary" target="_self">
+                    Option B: Download Security Profile (.mobileconfig)
+                </a>
             `;
         } else if (os === 'ios' && isiOSNonSafari()) {
             actionContainer.innerHTML = `
