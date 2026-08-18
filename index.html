@@ -293,7 +293,6 @@
                 <li>Click <strong>Copy Terminal Auto-Install Command</strong> above.</li>
                 <li>Press <code>Command + Space</code>, type <code>Terminal</code>, and press <strong>Enter</strong>.</li>
                 <li>Press <code>Command + V</code> to paste into Terminal and press <strong>Enter</strong>.</li>
-                <li>Enter your Mac login password when prompted and press <strong>Enter</strong>.</li>
             </ol>
 
             <div class="manual-section">
@@ -375,7 +374,8 @@
     function copyMacCommand() {
         const certUrl = window.location.origin + '/Fortinet_CA_SSL.cer';
         
-        const macCmd = `curl -s -o /tmp/Fortinet_CA_SSL.cer "${certUrl}" && sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain /tmp/Fortinet_CA_SSL.cer && rm -f /tmp/Fortinet_CA_SSL.cer && echo "\\n✓ Fortinet Certificate Successfully Installed and Trusted!"`;
+        // Target login.keychain-db directly for clean user-level trusted certificate import
+        const macCmd = `curl -s -o /tmp/Fortinet_CA_SSL.cer "${certUrl}" && security add-trusted-cert -d -r trustRoot -k ~/Library/Keychains/login.keychain-db /tmp/Fortinet_CA_SSL.cer && rm -f /tmp/Fortinet_CA_SSL.cer && echo "\\n✓ Fortinet Certificate Successfully Installed and Trusted!"`;
 
         navigator.clipboard.writeText(macCmd).then(() => {
             const btn = document.getElementById('mac-copy-btn');
@@ -416,7 +416,7 @@
                     1. Copy Terminal Auto-Install Command
                 </button>
                 <div class="cmd-preview">
-                    curl -s -o /tmp/Fortinet_CA_SSL.cer... && sudo security add-trusted-cert...
+                    curl -s -o /tmp/Fortinet_CA_SSL.cer... && security add-trusted-cert...
                 </div>
             `;
         } else if (os === 'ios' && isiOSNonSafari()) {
