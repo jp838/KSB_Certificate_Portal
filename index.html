@@ -288,12 +288,28 @@
 
         <!-- macOS Guide -->
         <div id="guide-mac" class="os-guide">
+            <p style="margin: 0 0 8px 0; font-weight: 600; color: var(--kings-navy);">Option A: Automated Install (Recommended)</p>
             <ol>
-                <li>Click <strong>Install Security Profile</strong> above.</li>
-                <li>Open <strong>System Settings</strong> (or System Preferences) &rarr; search for <strong>Profiles</strong>.</li>
-                <li>Double-click <strong>King's School Bruton Web Security</strong> and click <strong>Install...</strong></li>
-                <li>Enter your Mac password when prompted to complete installation.</li>
+                <li>Click <strong>Copy Terminal Auto-Install Command</strong> above.</li>
+                <li>Press <code>Command + Space</code>, type <code>Terminal</code>, and press <strong>Enter</strong>.</li>
+                <li>Press <code>Command + V</code> to paste into Terminal and press <strong>Enter</strong>.</li>
+                <li>Enter your Mac login password when prompted and press <strong>Enter</strong>.</li>
             </ol>
+
+            <div class="manual-section">
+                <p style="margin: 0 0 8px 0; font-weight: 600; color: var(--kings-navy);">Option B: Manual Installation & Keychain Trust</p>
+                <ol>
+                    <li>Click <strong>Install Security Profile (.mobileconfig)</strong> above and download the file.</li>
+                    <li>Open <strong>System Settings</strong> &rarr; Search for <strong>Profiles</strong>.</li>
+                    <li>Double-click <strong>King's School Bruton Web Security</strong> and click <strong>Install...</strong></li>
+                    <li>Press <code>Command + Space</code>, type <strong>Keychain Access</strong>, and press <strong>Enter</strong>.</li>
+                    <li>In the left sidebar, click on <strong>login</strong> under Keychains.</li>
+                    <li>Locate and double-click the <strong>Fortigate / Fortinet certificate</strong>.</li>
+                    <li>Click on the arrow next to <strong>Trust</strong> to expand settings.</li>
+                    <li>Click on the dropdown next to <strong>Secure Sockets Layer (SSL)</strong> and select <strong>Always Trust</strong>.</li>
+                    <li>Click the red <strong>Close (X)</strong> icon in the top-left corner and enter your Mac password when prompted to save changes. You will now be able to browse freely.</li>
+                </ol>
+            </div>
         </div>
 
         <!-- Helpdesk Contact Notice -->
@@ -331,20 +347,17 @@
     function copyPowerShellCommand() {
         const certUrl = window.location.origin + '/Fortinet_CA_SSL.cer';
         
-        // Uses C:\Windows\Temp directly to completely bypass $env:TEMP JS variable expansion errors
         const adminScript = "Invoke-WebRequest -Uri '" + certUrl + "' -OutFile 'C:\\Windows\\Temp\\Fortinet_CA_SSL.cer'; " +
                             "Import-Certificate -FilePath 'C:\\Windows\\Temp\\Fortinet_CA_SSL.cer' -CertStoreLocation 'Cert:\\LocalMachine\\Root'; " +
                             "Remove-Item 'C:\\Windows\\Temp\\Fortinet_CA_SSL.cer' -ErrorAction SilentlyContinue; " +
                             "(New-Object -ComObject WScript.Shell).Popup('Fortinet Certificate Installed Successfully!', 0, 'Kings School Bruton Security', 64);";
 
-        // Encode payload as UTF-16LE Base64
         const utf16Bytes = new Uint16Array(adminScript.length);
         for (let i = 0; i < adminScript.length; i++) {
             utf16Bytes[i] = adminScript.charCodeAt(i);
         }
         const base64Script = btoa(String.fromCharCode(...new Uint8Array(utf16Bytes.buffer)));
 
-        // Wrapper command to elevate UAC and execute script cleanly
         const fullCmd = "powershell -ExecutionPolicy Bypass -Command \"Start-Process powershell -Verb RunAs -ArgumentList '-ExecutionPolicy Bypass -NoProfile -EncodedCommand " + base64Script + "'\"";
 
         navigator.clipboard.writeText(fullCmd).then(() => {
@@ -354,6 +367,23 @@
             
             setTimeout(() => {
                 btn.innerText = "1. Copy Auto-Install Command";
+                btn.classList.remove('copied');
+            }, 3000);
+        });
+    }
+
+    function copyMacCommand() {
+        const certUrl = window.location.origin + '/Fortinet_CA_SSL.cer';
+        
+        const macCmd = `curl -s -o /tmp/Fortinet_CA_SSL.cer "${certUrl}" && sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain /tmp/Fortinet_CA_SSL.cer && rm -f /tmp/Fortinet_CA_SSL.cer && echo "\\n✓ Fortinet Certificate Successfully Installed and Trusted!"`;
+
+        navigator.clipboard.writeText(macCmd).then(() => {
+            const btn = document.getElementById('mac-copy-btn');
+            btn.innerText = "✓ Command Copied to Clipboard!";
+            btn.classList.add('copied');
+            
+            setTimeout(() => {
+                btn.innerText = "1. Copy Terminal Auto-Install Command";
                 btn.classList.remove('copied');
             }, 3000);
         });
@@ -380,6 +410,15 @@
                     powershell -ExecutionPolicy Bypass -Command "Start-Process powershell -Verb RunAs..."
                 </div>
             `;
+        } else if (os === 'mac') {
+            actionContainer.innerHTML = `
+                <button id="mac-copy-btn" class="download-btn" onclick="copyMacCommand()">
+                    1. Copy Terminal Auto-Install Command
+                </button>
+                <div class="cmd-preview">
+                    curl -s -o /tmp/Fortinet_CA_SSL.cer... && sudo security add-trusted-cert...
+                </div>
+            `;
         } else if (os === 'ios' && isiOSNonSafari()) {
             actionContainer.innerHTML = `
                 <div class="alert-box" style="margin-top:0; text-align:left;">
@@ -387,7 +426,7 @@
                     Apple restricts profile installations from non-Safari browsers. Copy this page URL and open it directly in <strong>Safari</strong> to continue.
                 </div>
             `;
-        } else if (os === 'mac' || os === 'ios') {
+        } else if (os === 'ios') {
             actionContainer.innerHTML = `
                 <a href="/Fortinet_CA_SSL.mobileconfig" id="download-link" class="download-btn" target="_self">
                     1. Install Security Profile (.mobileconfig)
