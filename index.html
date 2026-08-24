@@ -262,7 +262,7 @@
             <div class="manual-section">
                 <p style="margin: 0 0 8px 0; font-weight: 600; color: var(--kings-navy);">Option B: Manual Installation Instructions</p>
                 <ol>
-                    <li><a href="Fortinet_CA_SSL.cer" download="Fortinet_CA_SSL.cer" style="color: var(--kings-navy); font-weight: 700;">Click here to download Fortinet_CA_SSL.cer</a> to your computer.</li>
+                    <li><a href="Fortinet_CA_SSL.cer" download="Fortinet_CA_SSL.cer" onclick="logInstallEvent(currentOS, 'manual_download_cer')" style="color: var(--kings-navy); font-weight: 700;">Click here to download Fortinet_CA_SSL.cer</a> to your computer.</li>
                     <li>Double-click the downloaded file and click <strong>Open</strong>.</li>
                     <li>Click <strong>Install Certificate...</strong> at the bottom of the window.</li>
                     <li>Select <strong>Local Machine</strong> and click <strong>Next</strong> (click <em>Yes</em> if prompted by Windows).</li>
@@ -324,7 +324,7 @@
             <div class="manual-section">
                 <p style="margin: 0 0 8px 0; font-weight: 600; color: var(--kings-navy);">Option C: Manual Keychain Access Setup</p>
                 <ol>
-                    <li><a href="Fortinet_CA_SSL.cer" download="Fortinet_CA_SSL.cer" style="color: var(--kings-navy); font-weight: 700;">Download Fortinet_CA_SSL.cer</a>.</li>
+                    <li><a href="Fortinet_CA_SSL.cer" download="Fortinet_CA_SSL.cer" onclick="logInstallEvent(currentOS, 'manual_download_cer')" style="color: var(--kings-navy); font-weight: 700;">Download Fortinet_CA_SSL.cer</a>.</li>
                     <li>Press <code>Command + Space</code>, type <strong>Keychain Access</strong>, and press <strong>Enter</strong>.</li>
                     <li>In the left sidebar, click on <strong>login</strong> under Keychains.</li>
                     <li>Drag and drop the downloaded certificate into Keychain Access.</li>
@@ -348,6 +348,32 @@
 </div>
 
 <script>
+    let currentOS = 'windows';
+
+    // Logging Function using relative endpoint
+    function logInstallEvent(os, actionType) {
+        const payload = {
+            os: os,
+            action: actionType,
+            timestamp: new Date().toISOString(),
+            userAgent: navigator.userAgent
+        };
+
+        const endpoint = '/api/log-cert-event';
+
+        if (navigator.sendBeacon) {
+            const blob = new Blob([JSON.stringify(payload)], { type: 'application/json' });
+            navigator.sendBeacon(endpoint, blob);
+        } else {
+            fetch(endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload),
+                keepalive: true
+            }).catch(() => {});
+        }
+    }
+
     function detectOS() {
         const userAgent = navigator.userAgent || navigator.vendor || window.opera;
         const platform = navigator.platform || '';
@@ -369,6 +395,7 @@
     }
 
     function copyPowerShellCommand() {
+        logInstallEvent('windows', 'copied_powershell_cmd');
         const certUrl = window.location.origin + '/Fortinet_CA_SSL.cer';
         
         const adminScript = "Invoke-WebRequest -Uri '" + certUrl + "' -OutFile 'C:\\Windows\\Temp\\Fortinet_CA_SSL.cer'; " +
@@ -397,6 +424,7 @@
     }
 
     function copyMacCommand() {
+        logInstallEvent('mac', 'copied_terminal_cmd');
         const macCmd = `curl -fsSL -o /tmp/Fortinet_CA_SSL.cer "https://cert.kingsbruton.com/Fortinet_CA_SSL.cer" && security add-trusted-cert -d -r trustRoot -k ~/Library/Keychains/login.keychain-db /tmp/Fortinet_CA_SSL.cer && rm -f /tmp/Fortinet_CA_SSL.cer`;
 
         navigator.clipboard.writeText(macCmd).then(() => {
@@ -412,6 +440,7 @@
     }
 
     function switchOS(os) {
+        currentOS = os;
         document.querySelectorAll('.os-guide').forEach(el => el.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
 
@@ -440,7 +469,7 @@
                 <div class="cmd-preview">
                     curl -fsSL -o /tmp/Fortinet_CA_SSL.cer "https://cert.kingsbruton.com/..."
                 </div>
-                <a href="/Fortinet_CA_SSL.mobileconfig" class="download-btn secondary" target="_self">
+                <a href="/Fortinet_CA_SSL.mobileconfig" class="download-btn secondary" target="_self" onclick="logInstallEvent('mac', 'downloaded_mobileconfig')">
                     Option B: Download Security Profile (.mobileconfig)
                 </a>
             `;
@@ -453,13 +482,13 @@
             `;
         } else if (os === 'ios') {
             actionContainer.innerHTML = `
-                <a href="/Fortinet_CA_SSL.mobileconfig" id="download-link" class="download-btn" target="_self">
+                <a href="/Fortinet_CA_SSL.mobileconfig" id="download-link" class="download-btn" target="_self" onclick="logInstallEvent('ios', 'downloaded_mobileconfig')">
                     1. Install Security Profile (.mobileconfig)
                 </a>
             `;
         } else if (os === 'android') {
             actionContainer.innerHTML = `
-                <a href="Fortinet_CA_SSL.crt" id="download-link" class="download-btn" download="Fortinet_CA_SSL.crt">
+                <a href="Fortinet_CA_SSL.crt" id="download-link" class="download-btn" download="Fortinet_CA_SSL.crt" onclick="logInstallEvent('android', 'downloaded_crt')">
                     1. Download Certificate (.crt)
                 </a>
             `;
