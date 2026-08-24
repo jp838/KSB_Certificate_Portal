@@ -17,6 +17,7 @@
             --border: #cbd5e1;
             --accent-bg: #f0f4f8;
             --success: #15803d;
+            --warning-red: #dc2626;
         }
 
         body {
@@ -51,6 +52,13 @@
             margin: 0 0 6px 0;
             color: var(--kings-navy);
             font-weight: 700;
+        }
+
+        .warning-text {
+            color: var(--warning-red);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin: 6px 0 10px 0;
         }
 
         .card {
@@ -226,6 +234,7 @@
     <div class="header">
         <img src="logo.png" alt="King's School Bruton" class="logo" onerror="this.style.display='none'">
         <h1>Wi-Fi Security Certificate Setup</h1>
+        <p class="warning-text">*Only run commands from trusted sources. If you are unsure, please contact the ICT team before proceeding.</p>
         <p style="color: var(--subtext); margin: 0; font-size: 0.95rem;">Install the Fortinet Security Certificate to enable HTTPS filtering and secure internet access on BYOD devices.</p>
     </div>
 
@@ -350,7 +359,6 @@
 <script>
     let currentOS = 'windows';
 
-    // Logging Function using relative endpoint
     function logInstallEvent(os, actionType) {
         const payload = {
             os: os,
